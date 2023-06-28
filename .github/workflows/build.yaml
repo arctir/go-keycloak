@@ -1,0 +1,32 @@
+name: build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.19'
+
+      - name: build
+        run: make build
+
+      - name: check for changed files
+        uses: tj-actions/changed-files@v37
+        id: changed-files
+        with:
+          files: |
+            **.go
+
+      - name: fail if files changed
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+          exit -1
