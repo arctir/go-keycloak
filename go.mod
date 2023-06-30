@@ -1,4 +1,4 @@
-module github.com/arctir/go-keycloak
+module github.com/arctir/go-keycloak/v20
 
 go 1.19
 

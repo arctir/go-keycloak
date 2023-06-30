@@ -35,3 +35,49 @@ func (c *Client) PostRealm(ctx context.Context, body PostRealmJSONRequestBody, r
 	}
 	return c.Client.Do(req)
 }
+
+type PostRealmResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r PostRealmResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostRealmResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ParsePostRealmResponse parses an HTTP response from a PostRealmWithResponse call
+func ParsePostRealmResponse(rsp *http.Response) (*PostRealmResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostRealmResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+func (c *ClientWithResponses) PostRealmWithResponse(ctx context.Context, body PostRealmJSONRequestBody, reqEditors ...RequestEditorFn) (*PostRealmResponse, error) {
+	stdClient := c.ClientInterface.(*Client)
+	rsp, err := stdClient.PostRealm(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostRealmResponse(rsp)
+}
