@@ -2,7 +2,7 @@ KEYCLOAK_OPENAPI_SPEC=https://raw.githubusercontent.com/ccouzens/keycloak-openap
 
 .PHONY: build
 build: generate
-	go build ./v20
+	go build .
 
 .PHONY: deps
 deps:
@@ -10,5 +10,5 @@ deps:
 
 .PHONY: generate
 generate: deps
-	oapi-codegen -package keycloak -generate client ${KEYCLOAK_OPENAPI_SPEC} > ./v20/client.go
-	oapi-codegen -package keycloak -generate types ${KEYCLOAK_OPENAPI_SPEC} > ./v20/types.go
+	oapi-codegen -package keycloak -generate client ${KEYCLOAK_OPENAPI_SPEC} > client.go
+	oapi-codegen -package keycloak -generate types ${KEYCLOAK_OPENAPI_SPEC} > types.go
