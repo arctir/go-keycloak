@@ -1,4 +1,4 @@
-module github.com/arctir/go-keycloak/v20
+module github.com/arctir/go-keycloak
 
 go 1.19
 
@@ -46,3 +46,5 @@ require (
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+retract v20.0.3
