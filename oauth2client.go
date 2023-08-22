@@ -13,11 +13,12 @@ type clientCredentials struct {
 }
 
 type ClientCredentialsConfig struct {
-	TokenURL string
-	ClientID string
-	Username string
-	Password string
-	Scopes   []string
+	TokenURL     string
+	ClientID     string
+	ClientSecret string
+	Username     string
+	Password     string
+	Scopes       []string
 }
 
 func (c clientCredentials) Token() (*oauth2.Token, error) {
@@ -29,7 +30,8 @@ func (c ClientCredentialsConfig) NewClientCredentialsClientWithResponses(ctx con
 
 	clientScopes := append([]string{"offline_access"}, c.Scopes...)
 	config := &oauth2.Config{
-		ClientID: c.ClientID,
+		ClientID:     c.ClientID,
+		ClientSecret: c.ClientSecret,
 		Endpoint: oauth2.Endpoint{
 			TokenURL: c.TokenURL,
 		},
